@@ -56,7 +56,7 @@ pipeline or the notebook.
 
 ## Live demo
 
-Deployment steps are in `docs/DEPLOYMENT.md`. Once the app is deployed, add its link here.
+Deployment steps are in `docs/DEPLOYMENT.md`. Once the app is deployed, add its link here. https://social-media-wellbeing-demo.streamlit.app.
 
 ## Setup (Windows, PowerShell)
 
