@@ -1,0 +1,26 @@
+column,source,type,values,description
+row_id,line number in .dat,integer,1..N,Row position in the CDC file (the file has no respondent ID).
+age_code,Q1,integer (ordinal),1-7,CDC answer code for 'How old are you'.
+age_label,Q1,ordered category,12 years old or younger; 13 years old; 14 years old; 15 years old; 16 years old; 17 years old; 18 years old or older,Age in years as answered.
+age_group,Q1,ordered category,14 or younger; 15; 16; 17; 18 or older,"Age grouped as in CDC MMWR reports (12, 13 and 14 merged)."
+sex,Q2,category,Female; Male,'What is your sex'.
+grade_code,Q3,integer,1-5,CDC answer code for 'In what grade are you' (5 = ungraded/other).
+grade_label,Q3,category,9th grade; 10th grade; 11th grade; 12th grade; Ungraded or other grade,School grade.
+race_ethnicity,RACEETH,category,Am Indian/Alaska Native; Asian; Black or African American; Native Hawaiian/Other PI; White; Hispanic/Latino; Multiple - Hispanic; Multiple - Non-Hispanic,CDC-derived race/ethnicity.
+social_media_code,Q80,integer (ordinal),1-8,CDC answer code for how often the student uses social media.
+social_media_freq,Q80,ordered category,I do not use social media; A few times a month; About once a week; A few times a week; About once a day; Several times a day; About once an hour; More than once an hour,"Frequency of social media use. This is FREQUENCY, not hours per day."
+social_media_frequent,Q80 (checked against QN80),0/1,1 = several times a day or more often,"Frequent social media use, same cut-off as CDC's QN80."
+sleep_code,Q85,integer (ordinal),1-7,CDC answer code for hours of sleep on an average school night.
+sleep_hours_cat,Q85,ordered category,4 or less hours; 5 hours; 6 hours; 7 hours; 8 hours; 9 hours; 10 or more hours,Hours of sleep on a school night.
+sleep_hours_approx,Q85,integer,4-10,"Approximate hours (bottom-coded at 4, top-coded at 10). For plots/correlation only."
+sleep_8plus,Q85 (checked against QN85),0/1,1 = 8 or more hours,Got 8+ hours of sleep on a school night.
+active_days,Q76,integer,0-7,Days in the past 7 physically active for 60+ minutes in total.
+active_5plus,Q76 (checked against QN76),0/1,1 = 5 or more days,Physically active 60+ minutes on 5+ days.
+poor_mh_code,Q84,integer (ordinal),1-5,"CDC answer code: in the past 30 days, how often mental health was not good. HIGHER = WORSE."
+poor_mh_frequency,Q84,ordered category,Never; Rarely; Sometimes; Most of the time; Always,How often mental health was not good in the past 30 days.
+poor_mental_health,Q84 (checked against QN84),0/1,1 = most of the time or always,Poor mental health most of the time or always (CDC's QN84 definition).
+sad_hopeless,Q26 (checked against QN26),0/1,1 = yes,Felt sad or hopeless almost every day for 2+ weeks in a row in the past 12 months.
+difficulty_concentrating,Q106,0/1,1 = yes,CDC label 'Difficulty concentrating'. Check the exact question wording in the 2023 questionnaire before interpreting.
+weight,WEIGHT,float,> 0,CDC overall analysis weight. Use for national (weighted) estimates.
+stratum,STRATUM,integer,,Sampling stratum (complex survey design).
+psu,PSU,integer,,Primary sampling unit (complex survey design).

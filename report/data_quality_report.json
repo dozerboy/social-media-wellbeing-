@@ -1,0 +1,406 @@
+{
+  "source_file_rows": 20103,
+  "published_sample_size": 20103,
+  "dtypes_as_loaded": {
+    "row_id": "Int64",
+    "is_duplicate_record": "bool",
+    "Q1": "str",
+    "Q2": "str",
+    "Q3": "str",
+    "Q26": "str",
+    "Q76": "str",
+    "Q80": "str",
+    "Q84": "str",
+    "Q85": "str",
+    "Q106": "str",
+    "QN26": "str",
+    "QN76": "str",
+    "QN80": "str",
+    "QN84": "str",
+    "QN85": "str",
+    "WEIGHT": "str",
+    "STRATUM": "str",
+    "PSU": "str",
+    "RACEETH": "str"
+  },
+  "missing_values": {
+    "Q1": {
+      "count": 98,
+      "percent": 0.49
+    },
+    "Q2": {
+      "count": 158,
+      "percent": 0.79
+    },
+    "Q3": {
+      "count": 193,
+      "percent": 0.96
+    },
+    "Q26": {
+      "count": 240,
+      "percent": 1.19
+    },
+    "Q76": {
+      "count": 1227,
+      "percent": 6.1
+    },
+    "Q80": {
+      "count": 4900,
+      "percent": 24.37
+    },
+    "Q84": {
+      "count": 4398,
+      "percent": 21.88
+    },
+    "Q85": {
+      "count": 2662,
+      "percent": 13.24
+    },
+    "Q106": {
+      "count": 9157,
+      "percent": 45.55
+    },
+    "QN26": {
+      "count": 240,
+      "percent": 1.19
+    },
+    "QN76": {
+      "count": 1227,
+      "percent": 6.1
+    },
+    "QN80": {
+      "count": 4900,
+      "percent": 24.37
+    },
+    "QN84": {
+      "count": 4398,
+      "percent": 21.88
+    },
+    "QN85": {
+      "count": 2662,
+      "percent": 13.24
+    },
+    "WEIGHT": {
+      "count": 0,
+      "percent": 0.0
+    },
+    "STRATUM": {
+      "count": 0,
+      "percent": 0.0
+    },
+    "PSU": {
+      "count": 0,
+      "percent": 0.0
+    },
+    "RACEETH": {
+      "count": 370,
+      "percent": 1.84
+    }
+  },
+  "invalid_codes": {
+    "Q1": {
+      "count": 0,
+      "examples": []
+    },
+    "Q2": {
+      "count": 0,
+      "examples": []
+    },
+    "Q3": {
+      "count": 0,
+      "examples": []
+    },
+    "Q26": {
+      "count": 0,
+      "examples": []
+    },
+    "Q76": {
+      "count": 0,
+      "examples": []
+    },
+    "Q80": {
+      "count": 0,
+      "examples": []
+    },
+    "Q84": {
+      "count": 0,
+      "examples": []
+    },
+    "Q85": {
+      "count": 0,
+      "examples": []
+    },
+    "Q106": {
+      "count": 0,
+      "examples": []
+    },
+    "RACEETH": {
+      "count": 0,
+      "examples": []
+    },
+    "QN26": {
+      "count": 0,
+      "examples": []
+    },
+    "QN76": {
+      "count": 0,
+      "examples": []
+    },
+    "QN80": {
+      "count": 0,
+      "examples": []
+    },
+    "QN84": {
+      "count": 0,
+      "examples": []
+    },
+    "QN85": {
+      "count": 0,
+      "examples": []
+    }
+  },
+  "duplicates": {
+    "exact_full_record_duplicates": 0,
+    "rows_identical_on_selected_columns": 621,
+    "note": "The file has no respondent ID. Different students can give identical answers to the selected questions, so only exact full-record duplicates are removed."
+  },
+  "weight": {
+    "non_numeric": 0,
+    "non_positive": 0,
+    "missing": 0,
+    "min": 0.0023,
+    "median": 0.4143,
+    "max": 22.5437,
+    "mean": 1.0,
+    "max_to_median_ratio": 54.41,
+    "iqr_outliers_high": 2330,
+    "iqr_outliers_low": 0,
+    "outlier_policy": "Kept. Survey weights legitimately vary; trimming them would change the national estimates."
+  },
+  "answer_outliers": {
+    "policy": "All survey answers are bounded categorical codes; values outside the CDC code list are counted under 'invalid_codes' and set to missing."
+  },
+  "qn_consistency": {
+    "QN26": {
+      "compared_rows": 19863,
+      "agreement": 1.0
+    },
+    "QN76": {
+      "compared_rows": 18876,
+      "agreement": 1.0
+    },
+    "QN80": {
+      "compared_rows": 15203,
+      "agreement": 1.0
+    },
+    "QN84": {
+      "compared_rows": 15705,
+      "agreement": 1.0
+    },
+    "QN85": {
+      "compared_rows": 17441,
+      "agreement": 1.0
+    }
+  },
+  "warnings": [],
+  "cleaning_steps": [
+    {
+      "step": "start",
+      "rows": 20103
+    },
+    {
+      "step": "set invalid answer codes to missing",
+      "values_changed": 0,
+      "rows": 20103
+    },
+    {
+      "step": "drop exact duplicate full records",
+      "rows_removed": 0,
+      "rows": 20103
+    },
+    {
+      "step": "drop rows with missing or non-positive survey weight",
+      "rows_removed": 0,
+      "rows": 20103
+    },
+    {
+      "step": "recode CDC answer codes to labelled columns",
+      "rows": 20103
+    },
+    {
+      "step": "drop rows with no answer to any study question",
+      "rows_removed": 25,
+      "rows": 20078
+    },
+    {
+      "step": "missing answers left as missing (no imputation)",
+      "rows": 20078
+    }
+  ],
+  "cleaned_rows": 20078,
+  "cleaned_dtypes": {
+    "row_id": "Int64",
+    "age_code": "Int64",
+    "age_label": "str",
+    "age_group": "str",
+    "sex": "str",
+    "grade_code": "Int64",
+    "grade_label": "str",
+    "race_ethnicity": "str",
+    "social_media_code": "Int64",
+    "social_media_freq": "str",
+    "social_media_frequent": "Int8",
+    "sleep_code": "Int64",
+    "sleep_hours_cat": "str",
+    "sleep_hours_approx": "Int64",
+    "sleep_8plus": "Int8",
+    "active_days": "Int64",
+    "active_5plus": "Int8",
+    "poor_mh_code": "Int64",
+    "poor_mh_frequency": "str",
+    "poor_mental_health": "Int8",
+    "sad_hopeless": "Int8",
+    "difficulty_concentrating": "Int8",
+    "weight": "float64",
+    "stratum": "Int64",
+    "psu": "Int64"
+  },
+  "cleaned_missing_percent": {
+    "row_id": 0.0,
+    "age_code": 0.48,
+    "age_label": 0.48,
+    "age_group": 0.48,
+    "sex": 0.78,
+    "grade_code": 0.95,
+    "grade_label": 0.95,
+    "race_ethnicity": 1.84,
+    "social_media_code": 24.28,
+    "social_media_freq": 24.28,
+    "social_media_frequent": 24.28,
+    "sleep_code": 13.13,
+    "sleep_hours_cat": 13.13,
+    "sleep_hours_approx": 13.13,
+    "sleep_8plus": 13.13,
+    "active_days": 5.99,
+    "active_5plus": 5.99,
+    "poor_mh_code": 21.78,
+    "poor_mh_frequency": 21.78,
+    "poor_mental_health": 21.78,
+    "sad_hopeless": 1.07,
+    "difficulty_concentrating": 45.48,
+    "weight": 0.0,
+    "stratum": 0.0,
+    "psu": 0.0
+  },
+  "variable_support": {
+    "age": {
+      "supported": true,
+      "columns": [
+        "age_label",
+        "age_group"
+      ],
+      "note": "High-school students only (about 14-18); not adults."
+    },
+    "daily_social_media_usage": {
+      "supported": "partial",
+      "columns": [
+        "social_media_freq",
+        "social_media_frequent"
+      ],
+      "note": "How OFTEN students use social media, not hours per day."
+    },
+    "screen_time": {
+      "supported": false,
+      "columns": [],
+      "note": "No screen-time item in the 2023 national YRBS file."
+    },
+    "nighttime_social_media_usage": {
+      "supported": false,
+      "columns": [],
+      "note": "Not asked in the 2023 national YRBS."
+    },
+    "sleep_duration": {
+      "supported": true,
+      "columns": [
+        "sleep_hours_cat",
+        "sleep_8plus"
+      ],
+      "note": "School nights only, in 1-hour bands (<=4 and 10+ are open-ended)."
+    },
+    "sleep_quality": {
+      "supported": false,
+      "columns": [],
+      "note": "Not asked in the 2023 national YRBS."
+    },
+    "physical_activity": {
+      "supported": true,
+      "columns": [
+        "active_days",
+        "active_5plus"
+      ],
+      "note": "Days active 60+ minutes in the past 7 days."
+    },
+    "self_reported_anxiety": {
+      "supported": false,
+      "columns": [],
+      "note": "No anxiety-specific item. Related (not equivalent) measures: poor_mental_health, sad_hopeless, difficulty_concentrating."
+    },
+    "mental_health_wellbeing": {
+      "supported": true,
+      "columns": [
+        "poor_mh_frequency",
+        "poor_mental_health",
+        "sad_hopeless",
+        "difficulty_concentrating"
+      ],
+      "note": "Self-reported frequency of poor mental health and persistent sadness/hopelessness."
+    }
+  },
+  "analysis_availability": [
+    {
+      "analysis": "social_media_distribution",
+      "available": true,
+      "reason": ""
+    },
+    {
+      "analysis": "screen_time_analysis",
+      "available": false,
+      "reason": "Screen time is not in the 2023 national YRBS."
+    },
+    {
+      "analysis": "social_media_vs_sleep_duration",
+      "available": true,
+      "reason": ""
+    },
+    {
+      "analysis": "nighttime_use_vs_sleep_quality",
+      "available": false,
+      "reason": "Neither nighttime use nor sleep quality is measured."
+    },
+    {
+      "analysis": "physical_activity_vs_wellbeing",
+      "available": true,
+      "reason": ""
+    },
+    {
+      "analysis": "social_media_by_age_group",
+      "available": true,
+      "reason": ""
+    },
+    {
+      "analysis": "social_media_vs_anxiety",
+      "available": false,
+      "reason": "No anxiety item; use 'social_media_vs_mental_health' and label it accordingly."
+    },
+    {
+      "analysis": "social_media_vs_mental_health",
+      "available": true,
+      "reason": ""
+    },
+    {
+      "analysis": "correlation_matrix",
+      "available": true,
+      "reason": ""
+    }
+  ]
+}

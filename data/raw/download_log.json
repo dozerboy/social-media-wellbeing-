@@ -1,0 +1,10 @@
+[
+  {
+    "file": "data\\raw\\XXH2023_YRBS_Data.dat",
+    "source_url": "https://www.cdc.gov/yrbs/files/2023/XXH2023_YRBS_Data.dat",
+    "method": "python -m src.download_data",
+    "recorded_at_utc": "2026-10-11T12:25:38+00:00",
+    "bytes": 8503569,
+    "sha256": "0a83cba11dc8a0cdf0043aacf0b80478f86cf93a91a8ecb81a276518e486241a"
+  }
+]
