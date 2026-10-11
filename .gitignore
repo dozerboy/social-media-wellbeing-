@@ -1,0 +1,11 @@
+  __pycache__/
+  *.pyc
+  .venv/
+  venv/
+  .ipynb_checkpoints/
+  .pytest_cache/
+  .streamlit/secrets.toml
+  .env
+  data/raw/*.dat
+  data/raw/*.part
+  data/interim/*.csv
