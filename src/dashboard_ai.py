@@ -100,9 +100,11 @@ def _profile_form(metadata: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 def _probability_chart(p: float, threshold: float, base: float, style_fig: Callable) -> go.Figure:
     fig = go.Figure(go.Bar(x=[p * 100], y=["Estimate"], orientation="h", marker_color=pl.BLUE, width=0.45,
                            hovertemplate="Estimated likelihood: %{x:.1f}%<extra></extra>"))
-    for value, name, dash in [(threshold, "Model cut-off", "dash"), (base, "Rate in training data", "dot")]:
+    # The two reference lines are often close together, so their labels go on opposite sides of the lines.
+    left, right = sorted([(threshold, "Model cut-off", "dash"), (base, "Rate in training data", "dot")])
+    for (value, name, dash), side in ((left, "top left"), (right, "top right")):
         fig.add_vline(x=value * 100, line=dict(color=pl.INK_2, width=1.5, dash=dash),
-                      annotation_text=f"{name}: {value:.0%}", annotation_position="top")
+                      annotation_text=f"{name}: {value:.0%}", annotation_position=side)
     fig.update_xaxes(range=[0, 100], ticksuffix="%", title="Estimated likelihood (under the model's definition)")
     fig.update_yaxes(visible=False)
     return style_fig(fig, "Estimated likelihood of reporting poor mental well-being", height=230, legend=False)
