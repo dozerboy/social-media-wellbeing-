@@ -129,6 +129,14 @@ Numbers quoted here come from the executed notebook on the CDC YRBS 2023 data.
 - That measures what the model *relies on* for prediction, not causes.
 - Sex reflects a group-level difference in the survey, not a personal trait.
 
+**A9b. Is the model fair across groups?**
+- Not equally. Sex is its strongest input, and female students reported poor mental health about twice as often (41.7% vs 20.0% in the test set).
+- At the 0.27 cut-off it flags 89.5% of female but 18.7% of male test students.
+- Its recall is 0.927 for female students but only 0.303 for male students, so it misses most male students who reported poor mental health.
+- Results across age groups are similar (recall 0.68–0.77).
+- We report this openly. It is one more reason the model must never be used to make decisions about people.
+- A possible improvement is separate thresholds per group, or a model without sex, at the cost of overall accuracy.
+
 **A10. How do the recommendations work?**
 - They are transparent rules in `src/recommendations.py`, separate from the model:
     - sleep below the CDC guideline (8–10 h for ages 13–17; 7+ h for 18+)

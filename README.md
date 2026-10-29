@@ -143,6 +143,7 @@ estimate or that social media causes poor mental health. A support note is alway
 - **Unweighted:** the metrics describe the sample, not the nation.
 - **Few inputs:** with only five inputs, individual estimates are uncertain.
 - **Demographics:** sex and age carry group-level patterns, not personal traits, and the dashboard's fairness table shows errors by group.
+- **Fairness result:** the yes/no label depends heavily on sex. At the 0.27 cut-off, the model flags 89.5% of female and 18.7% of male test students, and its recall is 0.927 for female but only 0.303 for male students. It misses most male students who reported poor mental health.
 - **Use:** never use it to make decisions about real people.
 
 ## Tests
