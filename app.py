@@ -29,6 +29,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src import analysis_utils as au  # noqa: E402
 from src import data_processing as dp  # noqa: E402
 from src import plotting as pl  # noqa: E402
+from src.dashboard_ai import render_ai_tab  # noqa: E402
 
 st.set_page_config(page_title="Social Media & Well-Being", layout="wide",
                    initial_sidebar_state="expanded")
@@ -253,7 +254,7 @@ def sidebar() -> Dict[str, object]:
     weighted = sb.toggle("Use survey weights", value=True, key="f_weighted",
                          help="On: percentages and averages estimate all US high-school students. "
                               "Off: they describe only the students in the sample.")
-    sb.button("Reset filters", on_click=reset_filters, width="stretch")
+    sb.button("Reset filters", on_click=reset_filters, width="stretch", key="reset_filters")
     sb.divider()
     sb.caption("Narrowing a range or a list also removes students who did not answer that "
                "question. A full range keeps them.")
@@ -684,7 +685,8 @@ def main() -> None:
     st.write("")
 
     tests = run_tests(data)
-    tabs = st.tabs(["Digital habits", "Sleep", "Mental well-being", "Key insights", "Limitations"])
+    tabs = st.tabs(["Digital habits", "Sleep", "Mental well-being", "Key insights", "Limitations",
+                    "AI Predictions & Recommendations"])
     with tabs[0]:
         section_digital(data)
     with tabs[1]:
@@ -695,6 +697,9 @@ def main() -> None:
         section_insights(data, tests, filters["weighted"])
     with tabs[4]:
         section_limitations()
+    with tabs[5]:
+        st.caption("The sidebar filters do not affect this tab: the model was trained once on the full dataset.")
+        render_ai_tab(style_fig, show_chart)
 
 
 if __name__ == "__main__":  # Streamlit runs the script as __main__; tests can import it safely

@@ -85,7 +85,7 @@ def test_more_filters_and_reset(app):
     app.multiselect(key="f_sex").set_value(["Female"]).run()
     df = dp.load_cleaned_data()
     assert metrics(app)["Respondents"] == f"{(df['sex'] == 'Female').sum():,}"
-    app.button[0].click().run()          # Reset filters
+    app.button(key="reset_filters").click().run()
     assert metrics(app)["Respondents"] == f"{len(df):,}"
 
 
@@ -126,6 +126,68 @@ def test_statistics_table_matches_analysis_utils(app):
     row = table[table["Comparison"].str.startswith("Social media freq. ↔ sleep")].iloc[0]
     r = au.spearman(df, "social_media_code", "sleep_hours_approx")
     assert row["n"] == r["n"] and row["Effect size"] == f"{r['statistic']:.3f}"
+
+
+# ---- AI Predictions & Recommendations tab -----------------------------------------------
+def test_all_existing_tabs_are_kept_and_ai_tab_added(app):
+    labels = [t.label for t in app.tabs]
+    assert labels[:5] == ["Digital habits", "Sleep", "Mental well-being", "Key insights", "Limitations"]
+    assert labels[5] == "AI Predictions & Recommendations"
+
+
+def test_ai_tab_explains_how_to_train_when_model_missing(built_dataset, tmp_path, monkeypatch):
+    from src import ml_model as ml
+    st.cache_resource.clear()
+    monkeypatch.setattr(ml, "MODEL_FILE", tmp_path / "none.joblib")
+    monkeypatch.setattr(ml, "METADATA_FILE", tmp_path / "none.json")
+    at = AppTest.from_file(APP, default_timeout=180).run()
+    assert not at.exception
+    assert any("has not been trained" in w.value for w in at.warning)
+    assert at.button(key="ai_train") is not None
+    assert not any(m.label == "Estimated likelihood" for m in at.metric)   # no fake prediction
+
+
+def test_ai_tab_reports_unreadable_model(built_dataset, tmp_path, monkeypatch):
+    from src import ml_model as ml
+    st.cache_resource.clear()
+    bad, meta = tmp_path / "bad.joblib", tmp_path / "bad.json"
+    bad.write_bytes(b"garbage")
+    meta.write_text("{}")
+    monkeypatch.setattr(ml, "MODEL_FILE", bad)
+    monkeypatch.setattr(ml, "METADATA_FILE", meta)
+    at = AppTest.from_file(APP, default_timeout=180).run()
+    assert not at.exception
+    assert any("could not be used" in e.value for e in at.error)
+
+
+def test_ai_prediction_matches_model_and_shows_recommendations(trained_model):
+    from src import ml_model as ml
+    st.cache_resource.clear()
+    at = AppTest.from_file(APP, default_timeout=180).run()
+    profile = {"social_media_code": 8, "sleep_hours_approx": 5, "active_days": 1, "age_group": "16", "sex": "Female"}
+    for feature, value in profile.items():
+        at.selectbox(key=f"ai_{feature}").set_value(value)
+    at.button(key="ai_predict").click().run()
+    assert not at.exception
+    model, meta = ml.load_model()
+    expected = ml.predict(model, meta, profile)
+    cards = {m.label: m.value for m in at.metric}
+    assert cards["Estimated likelihood"] == f"{expected['probability']:.0%}"
+    assert cards["Compared with the model's cut-off"] == ("Above" if expected["predicted_class"] else "Below")
+    text = " ".join(m.value for m in at.markdown)
+    for title in ("Protect your sleep", "Add movement you enjoy", "Make social media use more intentional"):
+        assert title in text
+    assert any("not a diagnosis" in i.value for i in at.info)
+
+
+def test_ai_not_answered_option_reaches_the_model(trained_model):
+    st.cache_resource.clear()
+    at = AppTest.from_file(APP, default_timeout=180).run()
+    at.selectbox(key="ai_social_media_code").set_value("Prefer not to answer")
+    at.button(key="ai_predict").click().run()
+    assert not at.exception
+    assert at.session_state["ai_profile"]["social_media_code"] is None
+    assert any("Social media use frequency" in c.value and c.value.startswith("Not answered") for c in at.caption)
 
 
 def test_missing_dataset_shows_clear_error(built_dataset, tmp_path, monkeypatch):

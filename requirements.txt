@@ -1,5 +1,6 @@
 # Packages the Streamlit dashboard (app.py) needs. Streamlit Community Cloud installs this file.
 # Exact versions = the ones the project was tested with (Python 3.12).
+# scikit-learn must match the version that saved models/wellbeing_model.joblib.
 # The notebook and the tests need more: install requirements-dev.txt for those.
 streamlit==1.65.0
 pandas==3.0.6
@@ -8,3 +9,5 @@ scipy==1.18.1
 matplotlib==3.11.2
 seaborn==0.13.2
 plotly==7.1.0
+scikit-learn==1.9.1
+joblib==1.6.0

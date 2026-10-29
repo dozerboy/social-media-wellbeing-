@@ -49,6 +49,26 @@ All numbers below come from the executed notebook (CDC YRBS 2023). Re-check them
    > "These sentences are generated from the filtered data, not written in advance."
 5. Press **Reset filters**.
 
+## 4b. AI predictions and recommendations (≈60 s)
+
+Open the **AI Predictions & Recommendations** tab and choose a profile, for example: more than once an hour, 5 hours of sleep, 1 active day, age 16, female. Then press **Predict**.
+
+> "Our teacher asked for an AI feature, so we trained a scikit-learn model on the same CDC data. It
+> estimates the likelihood that a student with these answers reported poor mental health. It is an
+> estimate, not a diagnosis. We compared Logistic Regression and Random Forest using cross-validation on
+> the training data only, then tested once on 3,141 held-out students."
+
+Scroll to the suggestions:
+
+> "These suggestions come from simple, transparent rules based on CDC sleep and activity guidelines.
+> They're separate from the model, and each one shows why it appeared."
+
+Scroll to **Model performance**:
+
+> "ROC-AUC is about 0.69. That's modest, which is honest: five survey answers can't explain mental health."
+
+*Tip:* rehearse once with the live app. The figures on screen come from `models/model_metadata.json`.
+
 ## 5. Findings (≈40 s)
 
 > "Three results stand out.

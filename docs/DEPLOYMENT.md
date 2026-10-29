@@ -31,6 +31,11 @@ src/data_processing.py
 src/analysis_utils.py
 src/plotting.py
 src/download_data.py
+src/ml_model.py                      ← AI model code
+src/recommendations.py               ← suggestion rules
+src/dashboard_ai.py                  ← AI tab
+models/wellbeing_model.joblib        ← REQUIRED by the AI tab (trained model)
+models/model_metadata.json           ← REQUIRED by the AI tab (metrics, curves, settings)
 data/processed/cleaned_data.csv      ← REQUIRED by the app (2.5 MB)
 data/processed/data_dictionary.csv
 data/raw/download_log.json

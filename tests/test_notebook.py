@@ -28,7 +28,8 @@ def test_notebook_runs_in_order_without_errors(built_dataset):
               if o.get("output_type") == "error"]
     assert not errors
     saved = {p.name for p in pl.CHARTS_DIR.glob("*.png")}
-    assert {"01_social_media_frequency.png", "08_spearman_heatmap.png", "09_roc_curves.png"} <= saved
+    assert {"01_social_media_frequency.png", "08_spearman_heatmap.png", "09_roc_curves.png",
+            "10_permutation_importance.png", "11_calibration.png"} <= saved
 
 
 def test_markdown_contains_no_hardcoded_results():
@@ -44,14 +45,16 @@ def test_markdown_contains_no_hardcoded_results():
         assert not re.search(r"(rho|ρ|OR|AUC)\s*=\s*-?\d", cleaned), f"hard-coded statistic in: {text[:80]}"
 
 
-def test_ml_section_has_no_target_leakage():
+def test_ml_section_uses_the_shared_model_code_without_leakage():
+    from src import ml_model as ml
     code = "\n".join(_cells("code"))
-    features = eval(re.search(r"FEATURES = (\[.*?\])", code).group(1))
-    assert re.search(r'TARGET = "poor_mental_health"', code)
     leaky = {"poor_mental_health", "poor_mh_code", "poor_mh_frequency", "sad_hopeless",
              "difficulty_concentrating"}
-    assert not leaky & set(features)
-    assert "make_pipeline(StandardScaler()" in code      # scaling fitted inside each CV fold
+    assert not leaky & set(ml.FEATURES)
+    assert "ml.train_and_evaluate(" in code and "recs.generate_recommendations(" in code
+    # one version of the training logic: the notebook must not build its own models
+    for forbidden in ("RandomForestClassifier(", "LogisticRegression(", "train_test_split(", "cross_validate("):
+        assert forbidden not in code, f"notebook re-implements model training: {forbidden}"
 
 
 def test_notebook_uses_shared_modules_only():

@@ -83,6 +83,65 @@ Numbers quoted here come from the executed notebook on the CDC YRBS 2023 data.
 - The probability that the model ranks a random positive case above a random negative case.
 - 0.5 is chance level; 1.0 is perfect.
 
+## AI prediction and recommendations
+
+**A1. What exactly does the AI model predict?**
+- It predicts `poor_mental_health`: whether a student said their mental health was "not good" most of the time or always in the past 30 days (survey question Q84).
+- It outputs an *estimated likelihood* for a profile, learned from 15,705 surveyed students. It is not a diagnosis.
+
+**A2. Which inputs does it use, and why not more?**
+- It uses social media frequency, school-night sleep, active days, age group and sex: the lifestyle and demographic answers a user can describe.
+- Other mental-health answers (sadness, difficulty concentrating) are outcomes, so using them would be leakage.
+- Grade duplicates age. Race/ethnicity was left out by design.
+
+**A3. How did you prevent data leakage?**
+- Outcome columns are excluded from the inputs, which a test checks.
+- The train/test split happens first.
+- Imputation and scaling sit inside a scikit-learn Pipeline, so they learn only from training rows; a test also checks this.
+- Model selection, the threshold and the calibration check all use cross-validation on the training set only.
+- The test set is used once, for the final evaluation.
+
+**A4. How were missing answers handled?**
+- Students without a target answer are dropped, not counted as "no".
+- Missing inputs, such as the 26% who skipped the social media question, are filled inside the pipeline: the training median plus a "was missing" flag, or a "Not answered" category.
+
+**A5. Why Logistic Regression and not the Random Forest?**
+- The rule, fixed before testing, was: highest 5-fold cross-validated ROC-AUC on the training data, preferring Logistic Regression if within 0.01.
+- Logistic Regression scored 0.692 against 0.689, and it is easier to interpret.
+- On the test set they are practically equal (0.694 vs 0.695).
+
+**A6. Your accuracy is only about 0.60. Is the model bad?**
+- Accuracy is the wrong single measure here. About 69% of test students are "no", so a model that always said "no" would get about 69% accuracy while finding nobody.
+- Our model finds 72% of the positive students (recall 0.719), with precision 0.412, at a threshold chosen to balance the two (F1).
+- ROC-AUC is 0.694: modest discrimination, which is honest for five survey answers.
+
+**A7. Why is the threshold 0.27 and not 0.5?**
+- The positive class is the minority (31%). With 0.5 the model would flag very few students.
+- 0.27 maximised F1 on out-of-fold training predictions.
+- Lowering it trades more false alarms for fewer missed cases.
+
+**A8. Are the displayed probabilities trustworthy?**
+- On average, yes. The cross-validated calibration error was 0.010, and the test-set calibration plot follows the diagonal.
+- They are population-level estimates and may not apply to any one person.
+
+**A9. Which inputs matter most, and does that mean they cause poor mental health?**
+- Permutation importance on the test set ranks sex and sleep highest.
+- That measures what the model *relies on* for prediction, not causes.
+- Sex reflects a group-level difference in the survey, not a personal trait.
+
+**A10. How do the recommendations work?**
+- They are transparent rules in `src/recommendations.py`, separate from the model:
+    - sleep below the CDC guideline (8–10 h for ages 13–17; 7+ h for 18+)
+    - fewer than 7 active days (the CDC recommends 60 minutes every day for ages 6–17)
+    - social media several times a day or more
+- At most three are shown, by priority, each with its reason and the answer that triggered it.
+- They never promise to change the estimate, and a support note is always shown.
+
+**A11. What are the ethical limits?**
+- It is not a diagnosis, and it was trained on US high-school students in 2023, so it is not for college students or other countries.
+- It shows associations only, and it is unweighted.
+- It must never be used to make decisions about real people.
+
 ## Implementation
 
 **18. How do the notebook and dashboard stay consistent?**
@@ -91,7 +150,7 @@ Numbers quoted here come from the executed notebook on the CDC YRBS 2023 data.
 - Tests guard against copying that code into the notebook.
 
 **19. How did you test the project?**
-- 52 automated pytest tests on a synthetic file in CDC's layout. They cover file errors, cleaning rules, statistical functions, dashboard metrics and filters, running the whole notebook, target leakage and hard-coded results.
+- 94 automated pytest tests on a synthetic file in CDC's layout. They cover file errors, cleaning rules, statistical functions, dashboard metrics and filters, the AI model (leakage, split, imputation, predictions, save/load), the recommendation rules, running the whole notebook, and hard-coded results.
 - We also ran everything on the real data.
 
 **20. Why Streamlit caching?**

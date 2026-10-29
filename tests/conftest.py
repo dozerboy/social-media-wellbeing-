@@ -11,6 +11,7 @@ TEST_ROOT = Path(tempfile.mkdtemp(prefix="smw_tests_"))
 os.environ["SMW_DATA_DIR"] = str(TEST_ROOT / "data")
 os.environ["SMW_REPORT_DIR"] = str(TEST_ROOT / "report")
 os.environ["SMW_OUTPUT_DIR"] = str(TEST_ROOT / "outputs")
+os.environ["SMW_MODEL_DIR"] = str(TEST_ROOT / "models")
 os.environ.setdefault("MPLBACKEND", "Agg")
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -36,3 +37,11 @@ def built_dataset():
 @pytest.fixture(scope="session")
 def raw_df(built_dataset):
     return dp.load_raw_csv(dp.INTERIM_CSV_FILE)
+
+
+@pytest.fixture(scope="session")
+def trained_model(built_dataset):
+    """Model trained on the SYNTHETIC test fixture (temporary folder) - for code tests only."""
+    from src import ml_model as ml
+    assert ml.MODEL_DIR == TEST_ROOT / "models", "tests must never overwrite the real model"
+    return ml.train_and_evaluate(save=True)

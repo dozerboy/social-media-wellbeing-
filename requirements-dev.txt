@@ -1,7 +1,6 @@
 # Everything for local work: the dashboard (requirements.txt) + the notebook + the tests.
 -r requirements.txt
 statsmodels==0.15.0
-scikit-learn==1.9.1
 jupyter>=1.0
 pytest>=8.0
 nbclient>=0.10

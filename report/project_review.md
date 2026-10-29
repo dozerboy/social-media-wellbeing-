@@ -4,7 +4,7 @@
 **Environment:** Python 3.12.8 on Windows 10. Packages: pandas 3.0.6, numpy 2.5.4, scipy 1.18.1, statsmodels 0.15.0, scikit-learn 1.9.1, matplotlib 3.11.2, seaborn 0.13.2, plotly 7.1.0, streamlit 1.65.0.
 
 The work falls into three kinds:
-- **Automated tests:** `python -m pytest` runs 52 tests on a synthetic file in CDC's layout. All pass.
+- **Automated tests:** `python -m pytest` runs 94 tests on a synthetic file in CDC's layout, 52 from the first review and 42 added for the AI feature. All pass (re-run 2026-10-30).
 - **Real-data runs:** the pipeline, notebook and dashboard were executed on the real CDC 2023 file.
 - **Code review:** reading the code, without running it.
 
@@ -43,3 +43,18 @@ The work falls into three kinds:
 - **Synthetic fixture:** the automated tests use random synthetic data, so they verify the *code*, not the *findings*. The findings come from the real-data run of the notebook.
 - **Dashboard rendering:** the dashboard was driven through Streamlit's AppTest, and the real server was started and answered its health check. Nobody inspected it in a browser.
 - **Third-party warning:** seaborn emits a `PendingDeprecationWarning` from inside its own code. It is harmless.
+
+## AI prediction and recommendation update (2026-10-30)
+
+| Check | How | Result |
+|---|---|---|
+| Target verified | `poor_mental_health` compared with `poor_mh_code` on the real data | Pass: 1 exactly when Q84 = 4–5; 4,373 missing targets excluded, not counted as 0 |
+| No leakage | Outcome columns asserted absent from the inputs (module, test, notebook) | Pass |
+| Train-only preprocessing | Test checks the imputer's medians equal the training medians | Pass |
+| Split | Disjoint, reproducible, stratified (tests) | Pass |
+| Training on real data | `python -m src.ml_model --train` (about 15 s); run twice, identical metrics | Pass. Selected: Logistic Regression; test ROC-AUC 0.694 |
+| Save / load / predict | Round-trip test; missing, corrupt and mismatched files give clear errors | Pass |
+| Recommendations | Every rule, invalid inputs, the three-suggestion cap, banned wording (tests) | Pass |
+| Dashboard tab | AppTest on the real model:<br>- the prediction equals `ml.predict`<br>- the suggestions appear<br>- "Prefer not to answer" reaches the model<br>- the "not trained" and "unreadable model" messages appear | Pass |
+| Notebook | Executed top to bottom on the real data; uses `src/ml_model.py`, with no second copy of the training code | Pass |
+| Not checked | The new tab has not been viewed in a browser. The live Streamlit Cloud app has not been redeployed with these files yet | Pending |
